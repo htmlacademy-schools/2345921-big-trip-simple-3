@@ -1,26 +1,29 @@
-import CreationForm from '../view/creation-form';
-import EditingForm from '../view/edit-form';
-import Sorting from '../view/sorting';
-import EventItem from '../view/event-item';
-import EventList from '../view/event-list';
-import {render} from '../render';
+import SortView from '../view/sorting';
+import EventListView from '../view/event-list';
+import EventItemView from '../view/event-item';
+import EditFormView from '../view/edit-form';
+import NewItemFormView from '../view/creation-form';
+import { render } from '../render';
 
 export default class BoardPresenter {
-  waypointListComponent = new EventList();
+  eventListComponent = new EventListView();
 
-  constructor({boardContainer}) {
+  constructor({boardContainer, tripPointsModel}) {
     this.boardContainer = boardContainer;
+    this.tripPointsModel = tripPointsModel;
   }
 
   init() {
-    render(new Sorting(), this.boardContainer);
-    render(this.waypointListComponent, this.boardContainer);
-    render(new CreationForm(), this.waypointListComponent.getElement());
-    render(new EventItem(), this.waypointListComponent.getElement());
-    render(new EditingForm(), this.waypointListComponent.getElement());
+    this.tripPoints = [...this.tripPointsModel.getTripPoints()];
 
-    for (let i = 0; i < 3; i++) {
-      render(new EventItem(), this.waypointListComponent.getElement());
+    render(new SortView(), this.boardContainer);
+    render(this.eventListComponent, this.boardContainer);
+
+    render(new NewItemFormView(), this.eventListComponent.getElement());
+    render(new EditFormView(), this.eventListComponent.getElement());
+
+    for (let i = 0; i < this.tripPoints.length; i++) {
+      render(new EventItemView({tripPoint: this.tripPoints[i]}), this.eventListComponent.getElement());
     }
   }
 }
