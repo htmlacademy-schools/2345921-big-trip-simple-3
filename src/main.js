@@ -1,15 +1,15 @@
 import Filters from './view/filters.js';
 import {render} from './render.js';
-import BoardPresenter from './presenter/board-presenter.js';
-import PointModel from './model/point-model.js';
+import BoardPresenter from './presenter/board-presenter';
+import ModelWaypoint from './model/model-waypoint';
+import {mockInit} from './mock/point';
 
-const main = document.querySelector('.page-body__page-main');
-const container = main.querySelector('.trip-events');
-const siteFilterElement = document.querySelector('.trip-controls__filters');
-const pointsModel = new PointModel();
-const boardPresenter = new BoardPresenter({boardContainer: container, pointsModel});
+const siteHeaderElement = document.querySelector('.trip-controls__filters');
+const container = document.querySelector('.trip-events');
 
-render(new Filters(), siteFilterElement);
+mockInit(6, 10);
+const modelWaypoints = new ModelWaypoint();
+const boardPresenter = new BoardPresenter({boardContainer: container, waypointsModel: modelWaypoints});
 
+render(new Filters(), siteHeaderElement);
 boardPresenter.init();
-// eslint-disable-next-line
