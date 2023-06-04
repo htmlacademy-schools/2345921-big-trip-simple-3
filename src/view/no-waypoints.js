@@ -23,4 +23,3 @@ export default class NoWaypointMessage extends AbstractView {
     return createNoWaypoitsMessageTemplate(this.#filterType);
   }
 }
-
